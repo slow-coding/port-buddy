@@ -41,7 +41,7 @@ make            # 编译成通用二进制（arm64 + x86_64），落在 build/Po
 make install    # 复制到 /Applications 并向 LaunchServices 注册
 ```
 
-Release 页里的 `PortBuddy-<版本>.zip` 一样用：解压、拖进 `/Applications`。应用只做了 ad-hoc 签名、没有公证，从网上下载的副本第一次打开要右键 → 打开。
+Release 页里的安装包一样用：双击 `PortBuddy-<版本>.dmg`，把 `PortBuddy` 拖进 `/Applications`（也有 `PortBuddy-<版本>.zip`，想解压也行）。应用只做了 ad-hoc 签名、没有公证，从网上下载的副本第一次打开要右键 → 打开。
 
 开机自启：系统设置 → 通用 → 登录项 → 把 PortBuddy 加进去。
 
@@ -104,6 +104,7 @@ make run      编译并启动
 make icon     从 Sources/PortGlyph.swift 重新生成 Resources/AppIcon.icns
 make check    扫描器自检（JSON）
 make zip      打 build/PortBuddy-<版本>.zip
+make dmg      打 build/PortBuddy-<版本>.dmg（app + Applications 快捷方式）
 make clean
 ```
 

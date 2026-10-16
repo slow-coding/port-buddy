@@ -61,9 +61,11 @@ make            # universal binary (arm64 + x86_64) into build/PortBuddy.app
 make install    # copies it to /Applications and registers it with LaunchServices
 ```
 
-A prebuilt `PortBuddy-<version>.zip` from the Releases page works the same way:
-unzip, drag to `/Applications`. The app is ad-hoc signed, not notarised, so the
-first launch of a downloaded copy needs right-click → Open.
+A prebuilt disk image from the Releases page works the same way: open
+`PortBuddy-<version>.dmg` and drag `PortBuddy` into `/Applications` (a
+`PortBuddy-<version>.zip` is there too, if you prefer unzipping). The app is
+ad-hoc signed, not notarised, so the first launch of a downloaded copy needs
+right-click → Open.
 
 To start it at login: System Settings → General → Login Items → add PortBuddy.
 
@@ -138,6 +140,7 @@ make run      # build and launch
 make icon     # regenerate Resources/AppIcon.icns from Sources/PortGlyph.swift
 make check    # JSON sanity check on the scanner
 make zip      # build/PortBuddy-<version>.zip for a release
+make dmg      # build/PortBuddy-<version>.dmg (app + Applications link)
 make clean
 ```
 

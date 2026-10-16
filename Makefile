@@ -11,7 +11,7 @@ BUNDLE     := $(BUILD)/$(DISPLAY).app
 SWIFTFLAGS := -O -swift-version 5
 FRAMEWORKS := -framework AppKit -framework Foundation
 
-.PHONY: all bundle run install zip icon check clean
+.PHONY: all bundle run install zip dmg icon check clean
 
 all: bundle
 
@@ -53,6 +53,19 @@ install: bundle
 zip: bundle
 	ditto -c -k --keepParent $(BUNDLE) $(BUILD)/$(APP)-$(VERSION).zip
 	@echo "built $(BUILD)/$(APP)-$(VERSION).zip"
+
+# 装给别人用的盘：.app + 一颗 Applications 快捷方式（双击拖进去）——
+# 比 zip 少一步「解压，再拖」，非技术同事也不会拖错地方。
+$(BUILD)/$(APP)-$(VERSION).dmg: $(BUNDLE)
+	@rm -rf $(BUILD)/.dmg-stage
+	@mkdir -p $(BUILD)/.dmg-stage
+	@ditto $(BUNDLE) $(BUILD)/.dmg-stage/$(DISPLAY).app
+	@ln -sfn /Applications $(BUILD)/.dmg-stage/Applications
+	hdiutil create -volname $(DISPLAY) -srcfolder $(BUILD)/.dmg-stage -ov -format UDZO -quiet $@
+	@rm -rf $(BUILD)/.dmg-stage
+	@echo "built $@ ($$(du -h $@ | cut -f1))"
+
+dmg: $(BUILD)/$(APP)-$(VERSION).dmg
 
 icon:
 	@mkdir -p $(BUILD)
