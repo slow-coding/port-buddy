@@ -174,7 +174,14 @@ final class PortPanel: FlippedView {
         filterButton.frame = NSRect(x: 12, y: 5, width: refreshButton.frame.minX - 8 - 12, height: 22)
 
         let height = headerHeight + 1 + listHeight + bottomPadding
-        frame = NSRect(origin: .zero, size: NSSize(width: Self.contentWidth, height: height))
+        /* 只改大小，**不动原点**。面板是 popover 的内容视图，位置由 popover 给：它住在
+           NSPopoverFrame（非翻转）里，正确的位置是 (13,13) —— 而 frame 的 origin .zero
+           在非翻转的父视图里是**左下角**，正好比该在的位置低/左一个内缩。AppKit 通常会在
+           接着的 contentSize 之后把它摆回去，偶尔不摆：那时整块内容往下掉 13pt、最后一行
+           被切（用户 2026-10-16 早上那张截图就是这个）。这里不再碰原点，就轮不到它抖。 */
+        if frame.size.height != height || frame.size.width != Self.contentWidth {
+            frame = NSRect(origin: frame.origin, size: NSSize(width: Self.contentWidth, height: height))
+        }
         return height
     }
 

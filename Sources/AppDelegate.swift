@@ -362,6 +362,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         rendered = list
         let height = panel.render(list)
         popover.contentSize = NSSize(width: PortPanel.contentWidth, height: height)
+        reassertPanelFrame(height: height)
+    }
+
+    /// 把面板摆回 popover 该放的位置（内容四周 13pt 内缩，居中）。
+    /// 用户 2026-10-16 早上的截图：整块内容往下掉了一个内缩、最后一行被切 —— 面板
+    /// （popover 的内容视图）被落到了 (0,0)（NSPopoverFrame 是**非翻转**的，那是左下角），
+    /// 而 AppKit 不是每次都把它摆回去。平时这一条是空操作；窗口尺寸与预期不符时不猜。
+    private func reassertPanelFrame(height: CGFloat) {
+        guard let sv = panel.superview else { return }
+        let w = PortPanel.contentWidth
+        let inset = max(0, (sv.bounds.width - w) / 2)
+        guard inset > 0,
+              abs(sv.bounds.height - (height + inset * 2)) < 1 else { return }
+        let want = NSRect(x: inset, y: inset, width: w, height: height)
+        if panel.frame != want || panel.bounds.origin != .zero {
+            panel.bounds = NSRect(origin: .zero, size: panel.bounds.size)
+            panel.frame = want
+        }
     }
 
     // MARK: - Kill
