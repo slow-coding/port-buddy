@@ -3,7 +3,7 @@
 #  and a variable with trailing spaces splits target names in two.)
 APP        := PortBuddy
 DISPLAY    := PortBuddy
-VERSION    := 1.0.0
+VERSION    := 1.0.1
 MIN_MACOS  := 13.0
 SOURCES    := $(wildcard Sources/*.swift)
 BUILD      := build

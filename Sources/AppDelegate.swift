@@ -10,7 +10,7 @@ enum AppInfo {
     static let name = "PortBuddy"
     /// What the Finder, the menus and every message call it.
     static let displayName = "PortBuddy"
-    static let version = "1.0.0"
+    static let version = "1.0.1"
 }
 
 struct Flags {
